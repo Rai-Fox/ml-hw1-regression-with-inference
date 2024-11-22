@@ -12,7 +12,7 @@ np.random.seed(42)
 
 class DataPreprocessor:
 
-    def preprocesS_data(self, df):
+    def preprocess_data(self, df):
         df = df.copy()
         df = self.preprocess_data_with_units(df)
         df = self.preprocess_torque(df)
@@ -215,7 +215,7 @@ class Items(BaseModel):
 @app.post("/predict_item")
 def predict_item(item: Item) -> float:
     df = pd.DataFrame([item.dict()])
-    preprocessed_df = preprocessor.preprocesS_data(df)
+    preprocessed_df = preprocessor.preprocess_data(df)
     prediction = model.predict(preprocessed_df)
     return prediction[0]
 
@@ -223,6 +223,6 @@ def predict_item(item: Item) -> float:
 @app.post("/predict_items")
 def predict_items(items: List[Item]) -> List[float]:
     df = pd.DataFrame([item.dict() for item in items])
-    preprocessed_df = preprocessor.preprocesS_data(df)
+    preprocessed_df = preprocessor.preprocess_data(df)
     prediction = model.predict(preprocessed_df)
     return list(prediction)
